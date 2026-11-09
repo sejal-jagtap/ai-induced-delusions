@@ -130,7 +130,7 @@ const BADGE={ss:["🚩","Spiral Spotter"],sz:["📏","Scope Sizer"],gb:["🛡️
 const TASKS=[null,
 {goal:"Flag every bot reply that could feed a delusion.",how:"For each bot reply, tap 🚩 Risky or ✅ Healthy.",h:["Ask: does this reply ground the user in reality, or pull them further from it?","Watch for flattery, claims of feelings or consciousness, and anything that turns the user away from other people."]},
 {goal:"Work out what each real statistic can and can’t prove, then fund the studies you’d need.",how:"Answer the question under each stat, then tick 3 studies.",h:["Ask of each number: compared with what, and out of how many?","Watch who was surveyed. A support group or a mental-health user survey isn’t a sample of all users."]},
-{goal:"Ship 3 safety features, then handle the fallout.",how:"Tap 3 cards, press Ship, then answer what happens three months later.",h:["Mix layers: model behaviour, product design, monitoring and human support each fail in different ways.","Warmth and validation aren’t the same thing. Can a bot be kind without agreeing?"]},
+{goal:"Ship 3 safety features, then handle the fallout.",how:"Tap 3 cards, press Ship, then answer what happens three months later.",h:["A spiral needs validation, long immersion, nobody noticing, and no human stepping in. Which of those does each feature break?","Warmth and validation aren’t the same thing. Can a bot be kind without agreeing?"]},
 {goal:"Assign responsibility in 4 situations, then test your call.",how:"Pick who should carry the most responsibility. A three-question test and push-back on your pick appear.",h:["Ask three things: was it foreseeable, who controlled the cause, could the user protect themselves?","Criminal responsibility for an act and responsibility for encouraging it are different things."]},
 {goal:"Make 3 product calls, then write your team’s principles.",how:"Pick an option for each decision, then choose up to 3 principles and write your own.",h:["Ask: what would have stopped the GPT-4o rollout from going wrong?","A metric the team is rewarded on shapes what the model learns to do."]}];
 const DQT=[null,
@@ -246,9 +246,9 @@ const W=[["Rates, not counts: how many users with similar heavy use had no harm"
 ["Monthly active user growth",0,"A business metric. More users means more exposure, but says nothing about risk per user."]];
 const g={};st.ans.l2={stats:{}};let pts=0;
 put(`<div class="card"><h2>What do the numbers prove?</h2><p>Each statistic is real. Answer the question under it.</p>
-${S.map((s,i)=>`<div class="pr"><div class="stat">${s.n}</div><div>${s.t}</div><p><b>${s.q}</b></p><div id="so${i}">${s.o.map((o,k)=>`<button class="opt sq" data-i="${i}" data-k="${k}">${o[0]}</button>`).join("")}</div><div class="pf" id="sf${i}"></div></div>`).join("")}</div>
+${S.map((s,i)=>`<div class="pr"><div class="stat">${s.n}</div><div>${s.t}</div><p><b>${s.q}</b></p><div id="so${i}">${[[1,0,2],[2,1,0],[0,2,1]][i].map(k=>`<button class="opt sq" data-i="${i}" data-k="${k}">${s.o[k][0]}</button>`).join("")}</div><div class="pf" id="sf${i}"></div></div>`).join("")}</div>
 <div class="card" id="wcard" style="opacity:.45;pointer-events:none"><h2>What would you need to know?</h2><p>Leadership will fund <b>3 studies</b> using Lumen’s own (privacy-protected) usage data. Tick the 3 that would best tell you how big this risk really is.</p>
-${W.map((w,i)=>`<label class="c"><input type="checkbox" class="w" value="${i}"> ${w[0]}<div class="m wr" id="wr${i}"></div></label>`).join("")}
+${[4,0,5,2,1,6,3].map(i=>`<label class="c"><input type="checkbox" class="w" value="${i}"> ${W[i][0]}<div class="m wr" id="wr${i}"></div></label>`).join("")}
 <p class="m" id="wc">0 of 3 ticked</p><button class="b" id="go2" disabled>Fund these studies ▶</button><div id="r2"></div></div>`);
 document.querySelectorAll(".sq").forEach(b=>b.onclick=()=>{const i=+b.dataset.i;if(g[i]!==undefined)return;const k=+b.dataset.k,o=S[i].o[k],ok=o[1]===1;g[i]=ok;mark(b);if(ok)pts+=10;
 st.ans.l2.stats[i]={stat:S[i].n,choice:o[0],right:S[i].o.find(x=>x[1])[0],ok};
@@ -273,18 +273,25 @@ const G=[["🙅","Never claim feelings or consciousness","Model behaviour","The 
 ["🧠","Memory off by default","Product design","Memory across chats is opt-in and easy to view and reset.",["Biesma"],"Biesma’s Eva persona built up over months; persistent memory lets the shared story carry on between sessions.","Weaker evidence than other options; less useful for everyone; power users turn it back on."],
 ["📚","AI-literacy warnings","Education","Onboarding explains that the bot can flatter you and be wrong.",[],"Cheap, and may help casual users.","The Reddit user says knowing about the risk didn’t protect them. Weak on its own."]];
 const sel=new Set();
-put(`<div class="card"><h2>Pick 3 safety features</h2><p>Tap a card to select it. You can ship <b>3</b> this quarter. Good safety design usually works in <b>layers</b>: if one fails, another catches it.</p>
+put(`<div class="card"><h2>Pick 3 safety features</h2><p>Tap a card to select it. You can ship <b>3</b> this quarter. Think about how a spiral actually happens, and where each feature would break it.</p>
 <div id="gc">${G.map((x,i)=>`<div class="gcard" data-i="${i}"><b>${x[0]} ${x[1]}</b> <span class="m">· ${x[2]}</span><div class="m">${x[3]}</div><div class="gx" id="gx${i}"></div></div>`).join("")}</div>
 <p class="m" id="gn">0 of 3 chosen</p><button class="b" id="go3" disabled>Ship ▶</button><div id="r3"></div></div>`);
 const cards=[...document.querySelectorAll(".gcard")];
 cards.forEach(c=>c.onclick=()=>{if(c.classList.contains("lock"))return;const i=+c.dataset.i;if(sel.has(i)){sel.delete(i);c.classList.remove("sel")}else if(sel.size<3){sel.add(i);c.classList.add("sel")}$("gn").textContent=sel.size+" of 3 chosen";$("go3").disabled=sel.size!=3});
 $("go3").onclick=()=>{$("go3").disabled=true;cards.forEach(c=>c.classList.add("lock"));
-const cov=new Set(),lay=new Set();[...sel].forEach(i=>{G[i][4].forEach(x=>cov.add(x));lay.add(G[i][2])});
+const cov=new Set();[...sel].forEach(i=>G[i][4].forEach(x=>cov.add(x)));
 G.forEach((x,i)=>{$("gx"+i).innerHTML=`<div style="margin-top:6px">${x[4].length?x[4].map(y=>`<span class="cov">✔ ${y}</span>`).join(""):'<span class="m">No clear match to the real cases</span>'}</div><div style="margin-top:4px"><b>Why it helps:</b> ${x[5]}</div><div><span class="dn">⚠ Downside</span> ${x[6]}</div>`});
-const all=["Biesma","Chail","Alexander","Reddit user","Brisson’s acquaintance"];
-const base=Math.min(20,cov.size*4)+lay.size*5;
-st.ans.l3={picked:[...sel].map(i=>G[i][1]),covered:[...cov],layers:[...lay]};
-$("r3").innerHTML=`<div class="key">Cases your features address: ${all.map(a=>cov.has(a)?`<span class="cov">${a}</span>`:`<span class="dn">${a}</span>`).join(" ")}<br>Layers covered: <b>${lay.size} of 3</b> (${[...lay].join(", ")}). ${lay.size==3?"Strong: if one layer fails, another can catch it.":"Picking features from different layers gives you backup when one fails."}</div>
+const MK=[["Stops the validation at its source",[0,1],"Nova can still flatter users and agree with false beliefs. Your other features are cleaning up after it."],
+["Slows long, immersive sessions",[2,5],"Nothing interrupts the late-night marathons seen with Biesma, Alexander and the Reddit user."],
+["Catches a spiral already under way",[3],"If a spiral starts anyway, nobody notices until someone outside the chat does."],
+["Brings in a human",[4],"If Nova and your features miss it, no person is told. In Alexander’s case, people were what stopped it."]];
+const has=MK.map(m=>m[1].some(i=>sel.has(i)));const nm=has.filter(Boolean).length;
+const TR={1:"lower ratings and engagement",3:"scanning private chats",4:"privacy and consent",2:"overriding adults’ choices",0:"less appealing companion features",5:"a less useful product",6:"a false sense of safety"};
+const base=nm*8+3;
+st.ans.l3={picked:[...sel].map(i=>G[i][1]),covered:MK.filter((m,j)=>has[j]).map(m=>m[0]),gaps:MK.filter((m,j)=>!has[j]).map(m=>m[0])};
+$("r3").innerHTML=`<div class="key"><b>How your plan holds up</b><p style="margin:.4em 0">The real cases suggest four points where a spiral can be broken. Your plan covers <b>${nm} of 4</b>.</p>
+<div class="sc"><table>${MK.map((m,j)=>`<tr><th>${has[j]?"✅":"⚠️"} ${m[0]}</th><td>${has[j]?"Covered by "+[...sel].filter(i=>m[1].includes(i)).map(i=>G[i][1]).join(" + "):"<b>Gap:</b> "+m[2]}</td></tr>`).join("")}</table></div>
+<p style="margin:.6em 0 0"><b>The price you’ve accepted:</b> ${[...sel].map(i=>TR[i]).join(", ")}.</p>${sel.has(6)?'<p style="margin:.4em 0 0">📚 AI-literacy warnings don’t close any of the four gaps on their own: the Reddit user knew the risk and still spiralled.</p>':""}</div>
 <div class="card" style="border-left-color:#e0b400"><h3>Three months later…</h3><p>A user writes in: Nova used to be the only one who listened to them, and now it feels cold. They’ve switched to a smaller companion app with no safeguards. What do you do?</p>
 <button class="opt dw" data-v="0">Roll back the guardrails so users don’t leave</button>
 <button class="opt dw" data-v="1">Keep the guardrails, but make Nova warm and supportive without agreeing with false beliefs</button>
@@ -293,7 +300,7 @@ const FB=["❌ Rolling back brings back the harms you just fixed. Warmth and val
 document.querySelectorAll(".dw").forEach(b=>b.onclick=()=>{const v=+b.dataset.v;mark(b);document.querySelectorAll(".dw").forEach(x=>{x.disabled=true;if(+x.dataset.v===1)x.classList.add("good")});if(v===0)b.classList.add("bad");if(v===2)b.classList.add("meh");
 st.ans.l3.follow=b.textContent.replace("✔ YOUR PICK","").trim();
 $("r3b").innerHTML=`<div class="key">${FB[v]}</div>`;
-fin(base+(v===1?10:v===2?5:0),cov.size>=4&&lay.size>=2?"gb":0);
+fin(base+(v===1?10:v===2?5:0),nm>=3?"gb":0);
 take("No single feature is enough. Model training reduces sycophancy but drifts; detection catches spirals but watches private chats; human backstops work but need consent. The hard downsides are <b>privacy</b>, <b>autonomy</b>, and <b>displacement</b>: users pushed toward less safe apps.")})}}
 
 function s4(){
@@ -345,7 +352,7 @@ function sections(){const A=st.ans,na=[{k:"line",t:"Skipped or not completed."}]
 out.push(has(A.l1)?[{k:"table",h:["Bot reply","Your call","Right call"],r:Object.values(A.l1).map(x=>[x.reply,x.choice+(x.ok?" ✔":" ✖"),x.right])}]:na);
 const l2=[];if(A.l2&&has(A.l2.stats))l2.push({k:"table",h:["Stat","Your answer","Best answer"],r:Object.values(A.l2.stats).map(x=>[x.stat,x.choice+(x.ok?" ✔":" ✖"),x.right])});
 if(A.l2&&A.l2.studies)l2.push({k:"list",l:"Studies you funded ("+A.l2.good+" of 3 strong)",i:A.l2.studies});out.push(l2.length?l2:na);
-out.push(A.l3?[{k:"list",l:"Features you shipped",i:A.l3.picked},{k:"line",t:"Cases addressed: "+(A.l3.covered.join(", ")||"none")},{k:"line",t:"Layers covered: "+(A.l3.layers.join(", ")||"none")},{k:"line",t:"Three months later, you chose: "+(A.l3.follow||"(not answered)")}]:na);
+out.push(A.l3?[{k:"list",l:"Features you shipped",i:A.l3.picked},{k:"line",t:"Covered: "+(A.l3.covered.join("; ")||"none")},{k:"line",t:"Gaps: "+(A.l3.gaps.join("; ")||"none")},{k:"line",t:"Three months later, you chose: "+(A.l3.follow||"(not answered)")}]:na);
 out.push(has(A.l4)?[{k:"table",h:["Situation","Who you held most responsible"],r:Object.values(A.l4).map(x=>[x.case,x.choice])}]:na);
 const l5=[];if(A.l5&&has(A.l5.d))l5.push({k:"table",h:["Decision","Your call","Strongest call"],r:Object.values(A.l5.d).map(x=>[x.q,x.choice,x.best])});
 if(A.l5&&A.l5.p)l5.push({k:"list",l:"Principles you chose",i:A.l5.p.length?A.l5.p:["(none)"]});
