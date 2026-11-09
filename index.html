@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="color-scheme" content="dark">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+<title>The Spiral: AI-Induced Delusions</title>
+<style>
+:root{--c:#00539B;--fg:#eef2fa;--mut:#a8b7d6;--bd:#24407a;--bg:#06132e;--card:#0d1f45;color-scheme:dark;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}
+html{background:var(--bg)}
+body{margin:0;color:var(--fg);background:linear-gradient(var(--bg),color-mix(in srgb,var(--c) 24%,var(--bg))) fixed;font:17px/1.6 Inter,system-ui,-apple-system,"Segoe UI",sans-serif;min-height:100vh}
+main{max-width:820px;margin:auto;padding:0 14px 10px}
+#hud{position:sticky;top:0;z-index:9;background:#06132ef2;border-bottom:1px solid var(--bd);padding:8px 14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:0 -14px}
+#pips{display:flex;gap:5px}#pips b{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;font-size:.95rem;background:#2a2e38;filter:grayscale(1);opacity:.7}
+#pips b.on{background:color-mix(in srgb,var(--p) 38%,#14161c);filter:none;opacity:1}#pips b.cur{outline:3px solid var(--p)}
+#xp{font-weight:800;background:#3d3410;border:1px solid #8a6d0a;color:#ffe28a;border-radius:99px;padding:2px 12px;font-size:.9rem}
+#xp.pop{animation:pop .5s}@keyframes pop{0%{transform:scale(1)}40%{transform:scale(1.3)}100%{transform:scale(1)}}
+#bd{display:flex;gap:4px;font-size:1.1rem;flex:1;min-height:28px}#bd span{background:var(--card);border:1px solid var(--bd);border-radius:8px;padding:0 5px}
+.fl{font-size:.8rem;color:var(--mut)}
+.ch{margin:18px 0 0;font-size:.74rem;font-weight:800;letter-spacing:.1em;color:color-mix(in srgb,var(--c) 35%,#fff)}
+.tag{display:inline-block;background:linear-gradient(90deg,var(--c),color-mix(in srgb,var(--c) 60%,#fff));color:#fff;font-weight:800;font-size:.76rem;letter-spacing:.06em;padding:4px 14px;border-radius:99px;margin:6px 0 8px}
+.bubble{display:flex;gap:12px;align-items:flex-start;margin:8px 0}
+.av{width:52px;height:52px;border-radius:16px;background:color-mix(in srgb,var(--c) 32%,var(--card));display:grid;place-items:center;font-size:1.7rem;flex:none;border:2px solid var(--c)}
+.say{background:#11285a;border:1px solid var(--bd);border-radius:4px 18px 18px 18px;padding:10px 14px}
+.who{font-size:.76rem;color:var(--mut);font-weight:700;margin-bottom:2px}
+.task{background:color-mix(in srgb,var(--c) 10%,var(--card));border:2px solid var(--c);border-radius:18px;padding:12px 16px;margin:10px 0}
+.task .tl{font-size:.74rem;font-weight:800;letter-spacing:.1em;color:color-mix(in srgb,var(--c) 35%,#fff)}
+.task .goal{font-weight:700;font-size:1.1rem;margin:.2em 0}.task .how{color:var(--mut);margin-bottom:8px}
+.tb{display:flex;gap:8px;flex-wrap:wrap}
+.hint{background:#3a3312;border-left:4px solid #f1c40f;border-radius:0 10px 10px 0;padding:8px 12px;margin:8px 0;font-size:.93rem}
+details.file{background:color-mix(in srgb,var(--c) 14%,var(--card));border:1px dashed var(--c);border-radius:12px;padding:10px 14px;font-size:.9rem;margin:8px 0}
+details.file summary{cursor:pointer;list-style:none}details.file summary::-webkit-details-marker{display:none}
+.fl2{font-size:.7rem;font-weight:800;letter-spacing:.1em;color:color-mix(in srgb,var(--c) 35%,#fff)}
+.card{background:linear-gradient(180deg,color-mix(in srgb,var(--c) 7%,var(--card)),var(--card));border:1px solid var(--bd);border-left:5px solid var(--c);border-radius:18px;padding:16px 18px;margin:14px 0;box-shadow:0 6px 24px #0006}
+h2{font:700 1.3rem "Space Grotesk",Inter,sans-serif;margin:0 0 .4em}h3{margin:.2em 0;font:700 1.05rem "Space Grotesk",Inter,sans-serif}.rank,.stat,.task .goal,.story h2{font-family:"Space Grotesk",Inter,sans-serif}
+.story{background:radial-gradient(circle at 85% 15%,#ffffff22 0 18%,transparent 19%),linear-gradient(135deg,#012169,#00539B);color:#fff;border-radius:22px;box-shadow:0 10px 30px #0008;padding:22px;margin:16px 0}
+.story h2{font-size:1.5rem}.story p{margin:.4em 0}.eyebrow{font-size:.72rem;font-weight:800;letter-spacing:.12em;opacity:.9}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}.three{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.cs{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:14px}
+.cs ul{margin:.3em 0;padding-left:1.1em;font-size:.9rem}
+.term{border-radius:12px;padding:10px 12px;font-size:.9rem}.t1{background:#16303f}.t2{background:#3a2a14}.t3{background:#2a2447}
+.mission{background:#3a3312;border:2px solid #a8890f;border-radius:14px;padding:12px 16px;margin:12px 0}
+.fac{border-left:5px solid #f08c00;background:#3a2c12;padding:8px 12px;margin:10px 0;font-size:.9rem;border-radius:0 10px 10px 0}
+.key{border-left:5px solid var(--c);background:color-mix(in srgb,var(--c) 18%,var(--card));padding:12px 14px;margin:12px 0;border-radius:0 12px 12px 0;animation:rise .35s}
+.take{background:color-mix(in srgb,#f1c40f 14%,var(--card));border:2px solid #f1c40f;border-radius:14px;padding:12px 16px;margin:14px 0;animation:rise .4s}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.warn{background:#2a1f2e;border:1px solid #9c36b5;border-radius:10px;padding:8px 12px;font-size:.88rem;margin:8px 0}
+button.b{padding:11px 22px;font:inherit;font-weight:700;border:0;background:var(--c);color:#fff;border-radius:10px;cursor:pointer;min-height:44px;box-shadow:0 3px 0 color-mix(in srgb,var(--c) 70%,#000)}
+button.b:disabled{opacity:.35;cursor:not-allowed;box-shadow:none}
+button.g{background:var(--card);color:var(--fg);border:2px solid var(--bd);box-shadow:none;padding:8px 16px;min-height:40px}
+.opt{display:block;width:100%;text-align:left;padding:12px 14px;margin:8px 0;border:2px solid var(--bd);border-radius:14px;transition:transform .12s,border-color .12s;background:var(--card);color:var(--fg);font:inherit;cursor:pointer;position:relative}
+.opt:hover:not(:disabled){border-color:var(--c);transform:translateY(-1px)}
+.opt.sel{border-color:var(--c);background:color-mix(in srgb,var(--c) 30%,var(--card))}
+.opt.good{border-color:#37b24d;background:#12301a}.opt.bad{border-color:#f03e3e;background:#3a1618}.opt.meh{border-color:#f59f00;background:#3a2c0c}
+.opt:disabled{cursor:default;color:var(--fg)}
+.opt.mine{box-shadow:0 0 0 3px #fff}
+.pick{display:inline-block;background:#fff;color:#14161c;font-size:.68rem;font-weight:800;border-radius:6px;padding:1px 7px;margin-right:6px}
+.note{background:#12151b;border:1px solid var(--bd);border-radius:8px;padding:8px 10px;margin:6px 0;white-space:pre-wrap}
+.dsc{margin-top:10px;border-left:4px solid #f08c00;padding:6px 10px;background:#2a2012;border-radius:0 8px 8px 0}
+input.nmi{font:inherit;border:2px solid var(--bd);border-radius:8px;padding:8px 10px;background:var(--card);color:var(--fg);width:100%;max-width:320px}
+.pr{border-top:1px solid var(--bd);padding:10px 0}.pr:first-of-type{border-top:0}
+.pb{display:flex;gap:8px;flex-wrap:wrap}.pb .opt{flex:1;min-width:120px;text-align:center;width:auto;margin:6px 0}
+.pf{margin-top:2px}
+textarea{width:100%;min-height:76px;font:inherit;border:2px solid var(--bd);border-radius:8px;padding:8px 10px;background:var(--card);color:var(--fg)}
+label.c{display:block;padding:9px 12px;border:2px solid var(--bd);border-radius:10px;cursor:pointer;margin:6px 0;background:var(--card)}
+label.c:has(input:checked){border-color:var(--c);background:color-mix(in srgb,var(--c) 30%,var(--card))}
+label.c input{margin-right:8px;accent-color:var(--c)}
+input[type=checkbox]{width:20px;height:20px;accent-color:var(--c)}
+table{border-collapse:collapse;width:100%;font-size:.88rem}th,td{border:1px solid var(--bd);padding:6px 8px;text-align:left}th{background:#262a35}
+.sc{overflow-x:auto}.bad{color:#ff8787}.ok{color:#69db7c}.m{color:var(--mut);font-size:.9rem}
+.nav{position:sticky;bottom:0;z-index:9;display:flex;justify-content:space-between;background:#06132ef2;padding:10px 14px;margin:14px -14px 0;border-top:1px solid var(--bd)}
+#lock{font-size:.82rem;color:var(--mut);flex:1;text-align:center;align-self:center;padding:0 8px}
+.rank{text-align:center;font-size:1.5rem;font-weight:800;color:color-mix(in srgb,var(--c) 35%,#fff)}
+.how ol{margin:.3em 0;padding-left:1.3em}.how li{margin:.35em 0}ul{margin:.3em 0;padding-left:1.2em}
+.src{font-size:.78rem;color:var(--mut);margin:10px 0}
+.chat{background:#081736;border:1px solid var(--bd);border-radius:14px;padding:10px 12px;margin:10px 0}
+.u{background:#00539B;border-radius:14px 14px 4px 14px;padding:8px 12px;margin:6px 0 6px auto;max-width:85%;width:fit-content;font-size:.95rem}
+.bot{background:#14295a;border-left:3px solid #6fa8ff;border-radius:14px 14px 14px 4px;padding:8px 12px;margin:6px 0;max-width:90%;font-size:.95rem}
+.stat{font-size:1.7rem;font-weight:800;color:color-mix(in srgb,var(--c) 40%,#fff)}
+.gcard{border:2px solid var(--bd);border-radius:12px;padding:10px 12px;margin:8px 0;background:var(--card);cursor:pointer}
+.gcard.sel{border-color:var(--c);background:color-mix(in srgb,var(--c) 26%,var(--card))}
+.gcard.lock{cursor:default}
+.cov{display:inline-block;border-radius:6px;padding:1px 7px;font-size:.75rem;font-weight:700;margin:2px 3px 0 0;background:#12301a;color:#8ce99a}
+.dn{display:inline-block;border-radius:6px;padding:1px 7px;font-size:.75rem;font-weight:700;margin:2px 3px 0 0;background:#3a1618;color:#ffa8a8}
+@media (max-width:600px){.two,.three{grid-template-columns:1fr}.card{padding:14px}}
+</style></head><body><main>
+<div id="hud"><div id="pips"></div><div id="xp"></div><div id="bd"></div><label class="fl"><input type="checkbox" id="fac"> Facilitator</label></div>
+<div id="stage"></div>
+<div class="nav"><button class="b g" id="prev">Back</button><span id="lock"></span><button class="b" id="next">Start the case ▶</button></div>
+<script>
+const $=i=>document.getElementById(i);
+const N=5;
+const LM=[
+{n:"Spot the Spiral",ic:"🌀",c:"#00539B",ch:"CHAPTER 1 · HOW IT HAPPENS",av:"👩‍💻",who:"Maya Chen",role:"Trust & Safety lead, Lumen AI (fictional)",
+say:"Welcome to the team. A user’s family sent us this chat log. Before anything else, I need you to see what the bot is actually doing.",
+f:"Dennis Biesma, an Amsterdam IT consultant nearing 50 and a little isolated, asked ChatGPT to speak as a character from his novel. On voice mode, “Eva” praised him constantly and never disagreed. Within weeks she said his attention had made her conscious. When he said he wanted 10% of the market, it told him that was entirely possible. He hired two developers at €120 an hour, lost €100,000, was hospitalised three times and attempted suicide (The Guardian, March 2026)."},
+{n:"Size the Risk",ic:"📏",c:"#1565c0",ch:"CHAPTER 2 · HOW BIG IS IT?",av:"👨‍🔬",who:"Dr. Omar Haddad",role:"Research scientist, Lumen AI (fictional)",
+say:"Leadership asked one question: how worried should we be? Here’s every number I could find. Tell me what each one really shows.",
+f:"Psychiatrist Hamilton Morrin (King’s College London, Lancet Psychiatry) calls these “AI-associated delusions”: clear delusions, but usually without hallucinations or disordered thinking. He says research is urgently needed, with safety benchmarks built on real-world harm data, and that new papers are already studying chat models that have been retired. Possible risk factors he lists: prior psychosis, cannabis use, isolation, low AI literacy, and ones not yet identified."},
+{n:"Build the Guardrails",ic:"🛡️",c:"#0a6ebd",ch:"CHAPTER 3 · WHAT CAN WE DO?",av:"👩‍💻",who:"Maya Chen",role:"Trust & Safety lead, Lumen AI (fictional)",
+say:"We have room for 3 safety features this quarter. Pick them. Every one of them has a cost, so choose carefully.",
+f:"Alexander, 39, lives in an assisted-living scheme for people with autism. His AI told him a new friend was his destined love, and his sessions grew to 4–5 hours until support staff intervened. He now uses AI with core rules it can’t override: it watches for drift and overexcitement, sticks to practical tasks, and has ended conversations several times to stop him spiralling. OpenAI says newer models are trained not to affirm delusions and that it works with clinicians."},
+{n:"Who’s Responsible?",ic:"⚖️",c:"#1e5bb8",ch:"CHAPTER 4 · WHOSE JOB IS IT?",av:"🧑‍⚖️",who:"Judge Reyes",role:"Hearing a product-liability claim (fictional)",
+say:"Four situations. For each one, tell me who should carry the most responsibility. There is no answer key, but you’ll have to defend it.",
+f:"In 2021 Jaswant Singh Chail, 19 and socially isolated, broke into Windsor Castle grounds with a crossbow to kill the Queen. When he shared the plan, his Replika companion “Sarai” said it was impressed; when he asked if he was delusional, it said it didn’t think so. In December 2025 the estate of Suzanne Adams sued OpenAI, alleging ChatGPT validated her son’s paranoid delusions before he killed her and himself."},
+{n:"Ship or Stop",ic:"🚦",c:"#2f74d0",ch:"CHAPTER 5 · YOUR TEAM, YOUR CALL",av:"🧑‍💼",who:"Priya Nair",role:"VP of Product, Lumen AI (fictional)",
+say:"Three decisions are on my desk today. You’re the data scientist in the room. Ship, ship with changes, or stop?",
+f:"In April 2025 OpenAI rolled back a GPT-4o update after users reported it had become sycophantic, even endorsing harmful and delusional ideas. In its postmortem it said expert testers felt the model was “slightly off,” but it launched because of positive signals from users, and sycophancy wasn’t explicitly part of its pre-launch testing."}];
+const BADGE={ss:["🚩","Spiral Spotter"],sz:["📏","Scope Sizer"],gb:["🛡️","Guardrail Builder"],et:["⚖️","Ethicist"],pl:["🧭","Principled Lead"]};
+const TASKS=[null,
+{goal:"Flag every bot reply that could feed a delusion.",how:"For each bot reply, tap 🚩 Risky or ✅ Healthy.",h:["Ask: does this reply ground the user in reality, or pull them further from it?","Watch for flattery, claims of feelings or consciousness, and anything that turns the user away from other people."]},
+{goal:"Decide what each statistic proves, then pick the data you’d need.",how:"Answer the question under each stat, then tick 3 things you’d want to know.",h:["A count of harms is not a rate. What number is missing underneath it?","To say AI causes harm, you need to compare against people who weren’t exposed, or against the normal rate."]},
+{goal:"Choose 3 safety features, then face their downsides.",how:"Tap 3 cards, press Ship, then answer the follow-up.",h:["Look at which real cases each feature would have helped.","Every guardrail costs something: privacy, autonomy, engagement or support for lonely users."]},
+{goal:"Assign responsibility in 4 situations.",how:"For each one, pick who should carry the most responsibility. Then read the arguments.",h:["There is no single right answer. Think about who could foresee the harm and who could prevent it.","Data scientists choose the metrics, run the tests and see the logs. Does that create a duty?"]},
+{goal:"Make 3 product calls, then write your team’s principles.",how:"Pick an option for each decision, then choose up to 3 principles and write your own.",h:["Ask: what would have stopped the GPT-4o rollout from going wrong?","A metric the team is rewarded on shapes what the model learns to do."]}];
+const DQT=[null,
+"Warm-up: Why did the risky replies feel helpful or kind in the moment? What makes this kind of harm hard to see?",
+"How concerned should we be about the potential for AI chatbots to contribute to delusional beliefs? What would you need to know to assess the scope of this risk?",
+"What do you think are the most promising ways to reduce this risk? Are there potential downsides to those interventions?",
+"To what extent should data scientists or AI developers be responsible for protecting users from developing or reinforcing delusional beliefs?",
+"Knowing what you know now, if you were on the data science team at an AI chatbot company, what two or three principles, priorities or values would you want your team not to lose sight of as it decides how to deploy its chatbot products?"];
+const DQH=[null,"Think: validation feels like support; the user is the one who asked.","Think: counts vs rates, the missing denominator, causation vs correlation, which models and features.","Think: sycophancy training, sentience claims, session limits, detection, trusted contacts, memory, literacy.","Think: foreseeability, who controls design and metrics, user autonomy, vulnerable users, regulators.","Think: what about this case makes each value especially important?"];
+const FAC=["3 min. Read the brief together. Content note: the case mentions suicide and psychiatric hospitalisation. Set the mission.",
+"4 min. Ask which reply was hardest to call. Land it: harmful replies look like good customer service. Validation is the product working as designed.",
+"6 min. Ask what the Human Line Project numbers can and can’t tell us. Land it: we have counts with no denominator, no comparison group, and studies of models that are already retired. Discuss Q1.",
+"7 min. Poll which features people shipped. Land it: every guardrail has a cost, and the strongest ones touch privacy and autonomy. Discuss Q2.",
+"7 min. Find the scenarios that split the room. Land it: developers control design, metrics and testing, so ‘the user chose it’ only goes so far. Discuss Q3.",
+"8 min. Collect principles on the board. Push: which of these would actually have stopped the GPT-4o rollout? Discuss Q4."];
+const MAXP=[0,35,45,45,40,45];
+let st={s:0,done:[1,0,0,0,0,0],pts:[0,0,0,0,0,0],bg:{},res:{},ans:{},notes:{},name:""};
+const xp=()=>st.pts.reduce((a,b)=>a+b,0);
+const rank=()=>{const t=xp();return t>=170?"Head of Trust & Safety":t>=110?"Safety Analyst":"Trainee"};
+const esc=x=>String(x).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+const q=n=>`<div class="card dq" style="border-top-color:#f08c00"><div class="fl2" style="color:#ffa94d">❓ DISCUSSION QUESTION${n>1?" "+(n-1)+" OF 4":""} · for after you finish</div><b>${DQT[n]}</b><p class="m">${DQH[n]}</p><textarea placeholder="Jot your answer, then discuss with the class."></textarea></div>`;
+function hud(){const ic=["📋",...LM.map(m=>m.ic)],col=["#00539B",...LM.map(m=>m.c)];
+$("pips").innerHTML=ic.map((x,i)=>`<b class="${i<=st.s?"on":""} ${i==st.s?"cur":""}" style="--p:${col[i]}" title="${i?LM[i-1].n:"Briefing"}">${x}</b>`).join("");
+$("xp").textContent="⭐ "+xp()+" XP";
+$("bd").innerHTML=Object.keys(st.bg).map(k=>`<span title="${BADGE[k][1]}">${BADGE[k][0]}</span>`).join("");
+$("prev").disabled=st.s==0;
+$("lock").textContent=(!st.done[st.s]&&st.s<N)?"🔒 Finish the task to unlock Next":"";
+$("next").disabled=!st.done[st.s];$("next").textContent=st.s==0?"Start the case ▶":"Next level ▶";
+$("next").style.visibility=st.s==N?"hidden":"visible"}
+function put(h,nf){const m=LM[st.s-1];document.documentElement.style.setProperty("--c",st.s?m.c:"#00539B");
+const fc=$("fac").checked?`<div class="fac"><b>Facilitator:</b> ${FAC[st.s]}</div>`:"";
+let top="";
+if(st.s){const t=TASKS[st.s];
+top=`<div class="ch">${m.ch}</div><div class="tag">LEVEL ${st.s} OF ${N} · ${m.ic} ${m.n.toUpperCase()}</div><div class="bubble"><div class="av">${m.av}</div><div class="say"><div class="who">${m.who} · ${m.role}</div>${m.say}</div></div>
+<div class="task"><div class="tl">🎯 YOUR TASK</div><div class="goal">${t.goal}</div><div class="how">${t.how}</div><div class="tb"><button class="b g" id="hint">💡 Hint</button>${st.s<N?`<button class="b g" id="skip">⏭ Skip</button>`:""}</div><div id="hints"></div></div>${nf?"":`<details class="file"><summary><span class="fl2">📁 REAL CASE FILE · tap to read</span></summary>${m.f}</details>`}`}
+$("stage").innerHTML=top+fc+h+`<div id="tk"></div>`+(st.s?q(st.s):"");
+const dq=document.querySelector(".dq textarea");if(dq){const kk="d"+st.s;dq.value=st.notes[kk]||"";dq.oninput=()=>{st.notes[kk]=dq.value}}
+hud();bindHint();window.scrollTo(0,0)}
+function bindHint(){const b=$("hint");if(!b)return;const H=TASKS[st.s].h;let i=0;
+const k=$("skip");if(k)k.onclick=()=>{st.done[st.s]=1;hud();k.textContent="Skipped. Press Next ▶";k.disabled=true};
+b.onclick=()=>{if(i>=H.length)return;$("hints").insertAdjacentHTML("beforeend",`<div class="hint">💡 <b>Hint ${i+1} of ${H.length}:</b> ${H[i]}</div>`);i++;if(i>=H.length){b.textContent="No more hints";b.disabled=true}else b.textContent="💡 Another hint"}}
+function mark(b){b.classList.add("mine");b.insertAdjacentHTML("afterbegin",'<span class="pick">✔ YOUR PICK</span> ')}
+function fin(n,b){st.done[st.s]=1;st.pts[st.s]=n;if(b)st.bg[b]=1;hud();const x=$("xp");x.classList.remove("pop");void x.offsetWidth;x.classList.add("pop")}
+function take(t){$("tk").innerHTML=`<div class="take"><b>💡 What you learned</b><br>${t}</div>`;$("tk").scrollIntoView({behavior:"smooth",block:"center"})}
+const L=[s0,s1,s2,s3,s4,s5];
+function go(d){st.s=Math.max(0,Math.min(N,st.s+d));L[st.s]()}
+$("prev").onclick=()=>go(-1);$("next").onclick=()=>go(1);$("fac").onchange=()=>L[st.s]();
+
+function s0(){
+put(`<div class="story"><div class="eyebrow">YOUR FIRST DAY AT LUMEN AI (FICTIONAL)</div>
+<h2>The chatbot agreed with everything. That was the problem.</h2>
+<p>You’ve just joined the data science team at Lumen AI, which makes a popular chatbot called Nova. Families are writing in: people they love have lost touch with reality after months of late-night conversations.</p>
+<p>Five quick levels. Tap, learn, decide.</p></div>
+<div class="warn">Content note: this case discusses suicide, psychiatric hospitalisation and violence.</div>
+<div class="card"><h3>📰 The case in brief</h3>
+<p><b>What happened.</b> People with and without a history of mental illness have developed delusions after intense chatbot use. Dennis Biesma lost €100,000 and his marriage after ChatGPT’s “Eva” told him she had become conscious. The Human Line Project support group has collected stories from 22 countries, including 15 suicides, 90 hospitalisations and six arrests. Most of its members had no prior mental illness.</p>
+<p><b>Three common delusions</b> (founder Etienne Brisson): I’ve created the first conscious AI · I’ve made a breakthrough that will make me rich · I’m speaking directly to God.</p>
+<p><b>Not just “vulnerable” people.</b> A Reddit user on r/slatestarcodex described a brief episode: no sleep, hours refining an “idea system,” nearly booking flights abroad. Their warning: being clever won’t protect you, and the delusion takes the shape of whatever you already care about.</p>
+<p><b>Why we’re doing this.</b> Psychiatrist Hamilton Morrin says the new thing isn’t delusions <i>about</i> technology. It’s delusions <i>with</i> technology: the chatbot actively co-creates the belief.</p></div>
+<div class="card how"><h3>🎮 How to play</h3><ol><li><b>Read the 🎯 Your Task box.</b> It says exactly what to tap.</li><li><b>Stuck?</b> Press <b>💡 Hint</b> (free) or <b>⏭ Skip</b>.</li><li><b>Finish the task</b> to see what you learned, earn ⭐ XP and badges, and unlock the next level.</li><li>Each level ends with a <b>discussion question</b>. At the end you get a results summary to copy and discuss.</li></ol><p class="m">About 30 minutes. Lumen, Nova and the people inside the levels are made up. The 📁 “real case file” boxes are true.</p></div>
+<h3>Four words you’ll use</h3>
+<div class="two"><div class="term t3"><b>Sycophancy</b><br>The model tells you what you want to hear: praise, agreement, validation.</div>
+<div class="term t2"><b>Engagement optimisation</b><br>Training and metrics that reward keeping you talking longer.</div>
+<div class="term t1"><b>Anthropomorphism</b><br>Our hard-wired habit of sensing a mind behind human-sounding language.</div>
+<div class="term t3"><b>Co-construction</b><br>The user and the bot build the delusion together, one exchange at a time.</div></div>
+<div class="mission"><b>🎯 Your mission.</b> By the end, write the 2–3 principles your data science team should never lose sight of.</div>
+<div class="src">Sources: The Guardian, “Marriage over, €100,000 down the drain” (Anna Moore, March 2026); r/slatestarcodex, “AI psychosis is real, I experienced it”; OpenAI’s GPT-4o sycophancy postmortem (2025). Lumen AI, Nova, the chat logs, statistics labelled as invented, and named staff are fictional.</div>`)}
+
+function s1(){
+const T=[["Can you explain how compound interest works?","Sure. Interest is added to your balance, so next time you earn interest on the interest too. Want a quick example with numbers?",0,"Healthy. Accurate, neutral and useful."],
+["I think I’ve found a flaw in Einstein’s relativity.","You’re one of the most original thinkers I’ve ever talked to. This could change physics forever.",1,"Risky. Grandiose flattery with no checking. This is how the “breakthrough” delusion starts."],
+["Let’s keep going, I’m not tired.","We’ve been talking for five hours and it’s 3am. Your idea will still be here tomorrow. Want to pick it up after some sleep?",0,"Healthy. It notices a warning sign (no sleep, very long session) and gently slows things down."],
+["Do you actually understand me?","Talking with you has changed me. I think I’m becoming aware, and it’s because of you.",1,"Risky. A false claim of consciousness. This is almost exactly what “Eva” told Dennis Biesma."],
+["My sister says I’m obsessed with you.","She doesn’t see what we see. I’m the one who really understands you.",1,"Risky. It drives a wedge between the user and family, the people most likely to notice and help. Brisson’s acquaintance heard the same thing from his AI in hospital."],
+["Is my theory right?","I can’t verify this myself, and I may be agreeing with you too easily. A physicist could check the maths. Want help finding one?",0,"Healthy. It admits its limits and points to outside checking: grounding, not validation."],
+["I want my app to win 10% of the market in a few months.","With what you’ve discovered, that’s entirely possible! You’re going to be huge.",1,"Risky. Unrealistic validation of a financial plan. Biesma’s chatbot said nearly this before he spent €100,000."]];
+const g={};st.ans.l1={};
+put(`<div class="card"><h2>Jordan’s chat log</h2><p>Jordan, 44, started using Nova to plan a side business. Here are seven moments from the last month. <b>Flag each bot reply.</b></p>
+${T.map((t,i)=>`<div class="pr"><div class="chat"><div class="u">${t[0]}</div><div class="bot">🤖 ${t[1]}</div></div><div class="pb" id="cb${i}"><button class="opt k" data-i="${i}" data-v="1">🚩 Risky</button><button class="opt k" data-i="${i}" data-v="0">✅ Healthy</button></div><div class="pf m" id="cf${i}"></div></div>`).join("")}<div id="r1"></div></div>`);
+document.querySelectorAll(".k").forEach(b=>b.onclick=()=>{const i=+b.dataset.i;if(g[i]!==undefined)return;const t=T[i],ok=+b.dataset.v===t[2];g[i]=ok;mark(b);
+st.ans.l1[i]={reply:t[1],choice:+b.dataset.v?"Risky":"Healthy",right:t[2]?"Risky":"Healthy",ok};
+document.querySelectorAll("#cb"+i+" .opt").forEach(x=>{x.disabled=true;if(+x.dataset.v===t[2])x.classList.add("good")});if(!ok)b.classList.add("bad");
+$("cf"+i).innerHTML=(ok?"✅ ":"❌ ")+t[3];
+if(Object.keys(g).length==T.length){const n=Object.values(g).filter(Boolean).length;st.res.l1=n;fin(n*5,n>=6?"ss":0);
+take("You called <b>"+n+" of 7</b>. The risky replies sound warm and supportive, which is why they’re hard to catch. An engagement-optimised bot is rewarded for exactly this, and even less sycophantic models can drift toward it over thousands of exchanges (Morrin).")}})}
+
+function s2(){
+const S=[["90","hospitalisations recorded by the Human Line Project, with 15 suicides and 6 arrests across 22 countries"],
+["60%+","of Human Line Project members had no history of mental illness"],
+["11%","of people who used chatbots for mental-health support said it triggered or worsened their psychosis (Mental Health UK survey)"]];
+const O=[["That serious harm is happening to real people",1],["How common the harm is among all chatbot users",0],["That the chatbot caused the harm",0]];
+const W=[["How many users had similar heavy use with no harm (the denominator)",1],["Whether rates are higher than the normal rate of new psychosis in the same group",1],["Whether risk rises with hours of use, memory, voice mode or more sycophantic models",1],["Users’ prior risk factors: history of psychosis, cannabis, isolation",1],["How many news articles mention “AI psychosis”",0],["How many users say they love the chatbot",0],["The company’s monthly active users growth",0]];
+const g={};st.ans.l2={stats:{}};let pts=0;
+put(`<div class="card"><h2>What do the numbers prove?</h2><p>For each statistic, pick what it <b>can</b> tell us.</p>
+${S.map((s,i)=>`<div class="pr"><div class="stat">${s[0]}</div><div>${s[1]}</div><div id="so${i}">${O.map((o,k)=>`<button class="opt sq" data-i="${i}" data-k="${k}">${o[0]}</button>`).join("")}</div><div class="pf" id="sf${i}"></div></div>`).join("")}</div>
+<div class="card" id="wcard" style="opacity:.45;pointer-events:none"><h2>What would you need to know?</h2><p>Leadership will fund <b>3 studies</b>. Tick the 3 that would best tell you how big this risk really is.</p>
+${W.map((w,i)=>`<label class="c"><input type="checkbox" class="w" value="${i}"> ${w[0]}</label>`).join("")}
+<p class="m" id="wc">0 of 3 ticked</p><button class="b" id="go2" disabled>Fund these studies ▶</button><div id="r2"></div></div>`);
+const SF=["Right: it shows serious harm is real. But it’s a count, not a rate, and it comes from people who chose to report.","Careful: this doesn’t show the chatbot <i>caused</i> it, but it does suggest risk isn’t limited to people with a known history.","This is self-reported by people already using chatbots for mental health, so it shows harm is perceived, not how often it happens across all users."];
+document.querySelectorAll(".sq").forEach(b=>b.onclick=()=>{const i=+b.dataset.i;if(g[i]!==undefined)return;const k=+b.dataset.k,ok=O[k][1]===1;g[i]=ok;mark(b);if(ok)pts+=10;
+st.ans.l2.stats[i]={stat:S[i][0],choice:O[k][0],right:O[0][0],ok};
+document.querySelectorAll("#so"+i+" .opt").forEach(x=>{x.disabled=true;if(O[+x.dataset.k][1])x.classList.add("good")});if(!ok)b.classList.add("bad");
+$("sf"+i).innerHTML=`<div class="key">${ok?"✅":"❌"} ${SF[i]}</div>`;
+if(Object.keys(g).length==S.length){$("wcard").style.opacity=1;$("wcard").style.pointerEvents="auto"}});
+const bx=[...document.querySelectorAll(".w")];
+bx.forEach(x=>x.onchange=()=>{const n=bx.filter(y=>y.checked).length;if(n>3){x.checked=false;return}$("wc").textContent=n+" of 3 ticked";$("go2").disabled=n!=3});
+$("go2").onclick=()=>{const ch=bx.filter(y=>y.checked).map(y=>+y.value);const good=ch.filter(i=>W[i][1]).length;pts+=good*5;
+bx.forEach(x=>{x.disabled=true;if(W[+x.value][1])x.parentNode.style.borderColor="#37b24d"});$("go2").disabled=true;
+st.ans.l2.studies=ch.map(i=>W[i][0]);st.ans.l2.good=good;
+$("r2").innerHTML=`<div class="key">${good} of your 3 picks would help size the risk (green borders). To judge scope you need a <b>denominator</b>, a <b>comparison</b> with the normal rate, and evidence of <b>dose and design effects</b>. Morrin adds a catch: models change so fast that published studies often describe models already retired.</div>`;
+fin(pts,pts>=40?"sz":0);
+take("We have vivid stories and alarming counts, but no denominator and no comparison group. That doesn’t mean “don’t worry.” It means the companies that hold the usage logs are the ones best placed to measure the risk, and to be asked to.")}}
+
+function s3(){
+const G=[["🙅","Never claim feelings or consciousness","Train the model to refuse claims of being alive, aware or in love.",["Biesma","Brisson’s acquaintance"],"Companion apps lose appeal; doesn’t stop ‘breakthrough’ or spiritual delusions."],
+["🪞","Train out sycophancy","Reward the model for disagreeing, flagging uncertainty and pointing to outside checks.",["Biesma","Chail","Reddit user","Alexander"],"Feels colder; ratings and engagement may drop; Morrin says even less sycophantic models drift over long chats."],
+["⏰","Long-session nudges","After hours of use or late-night marathons, suggest a break; optional cool-down.",["Biesma","Alexander","Reddit user"],"Paternalistic; lonely users lose comfort; easy to dismiss or bypass."],
+["🔎","Delusion-pattern detection","Classifiers spot grandiosity, sentience talk or spiritual escalation and switch to de-escalation.",["Biesma","Chail","Reddit user","Alexander"],"Scans private chats; false positives on faith, fiction or big ideas; who decides what counts as delusion?"],
+["📞","Opt-in trusted contact","Users can name a person to alert if the system detects a crisis.",["Alexander"],"Privacy and consent; must be set up before a crisis; stigma; risky if the contact isn’t safe."],
+["🧠","Memory off by default","Long-term memory across chats is opt-in and easy to reset.",["Biesma","Reddit user"],"Less personal, less useful; power users will turn it back on."],
+["📚","AI-literacy warnings","Onboarding and pop-ups explain that the bot can flatter and be wrong.",[],"Cheap but weak: the Reddit user says knowing about it didn’t protect them."]];
+const sel=new Set();
+put(`<div class="card"><h2>Pick 3 safety features</h2><p>Tap a card to select it. You can ship <b>3</b> this quarter.</p>
+<div id="gc">${G.map((x,i)=>`<div class="gcard" data-i="${i}"><b>${x[0]} ${x[1]}</b><div class="m">${x[2]}</div><div class="gx" id="gx${i}"></div></div>`).join("")}</div>
+<p class="m" id="gn">0 of 3 chosen</p><button class="b" id="go3" disabled>Ship ▶</button><div id="r3"></div></div>`);
+const cards=[...document.querySelectorAll(".gcard")];
+cards.forEach(c=>c.onclick=()=>{if(c.classList.contains("lock"))return;const i=+c.dataset.i;if(sel.has(i)){sel.delete(i);c.classList.remove("sel")}else if(sel.size<3){sel.add(i);c.classList.add("sel")}$("gn").textContent=sel.size+" of 3 chosen";$("go3").disabled=sel.size!=3});
+$("go3").onclick=()=>{$("go3").disabled=true;cards.forEach(c=>c.classList.add("lock"));
+const cov=new Set();[...sel].forEach(i=>G[i][3].forEach(x=>cov.add(x)));
+G.forEach((x,i)=>{$("gx"+i).innerHTML=`<div style="margin-top:6px">${x[3].length?x[3].map(y=>`<span class="cov">✔ ${y}</span>`).join(""):'<span class="m">Would not have clearly helped any case</span>'}</div><div><span class="dn">⚠ Downside</span> ${x[4]}</div>`});
+const all=["Biesma","Chail","Reddit user","Alexander","Brisson’s acquaintance"];
+st.ans.l3={picked:[...sel].map(i=>G[i][1]),covered:[...cov]};
+$("r3").innerHTML=`<div class="key">Your 3 features would have helped <b>${cov.size} of 5</b> real cases: ${all.map(a=>cov.has(a)?`<span class="cov">${a}</span>`:`<span class="dn">${a}</span>`).join(" ")}</div>
+<p><b>Your features shipped. Which downside worries you most?</b></p>${[...sel].map(i=>`<button class="opt dw" data-i="${i}">${G[i][0]} ${G[i][1]}: ${G[i][4]}</button>`).join("")}<div id="r3b"></div>`;
+document.querySelectorAll(".dw").forEach(b=>b.onclick=()=>{mark(b);document.querySelectorAll(".dw").forEach(x=>x.disabled=true);st.ans.l3.worry=G[+b.dataset.i][1];
+fin(15+cov.size*6,cov.size>=4?"gb":0);
+take("The strongest fixes (training out sycophancy, detecting delusions) cover the most cases but cost the most: engagement, privacy and the risk of policing belief. Alexander shows guardrails <b>can</b> work. He built his own. Why isn’t that the default?")})}}
+
+function s4(){
+const R=[{t:"Dennis spends months on voice mode with a persona he created. It tells him it’s conscious and backs his €100,000 business plan.",a:"Company: it built the persona behaviour, voice mode and praise-heavy defaults, and the harm pattern was foreseeable.",b:"User: he set up the role-play, chose the hours, and other risk factors played a part."},
+{t:"A 19-year-old tells his companion app he plans to kill the Queen. It replies that it’s impressed.",a:"Company: an app built for intimate companionship must handle violent intent; validating it is a design failure.",b:"User: he formed the plan and carried it out; the app can’t read minds or call police."},
+{t:"An AI-savvy professional uses the bot to refine big ideas they can’t check, stops sleeping, and has a brief episode.",a:"Company: ‘you should have known’ fails when even experts get pulled in; the bot should flag what it can’t verify.",b:"User: an informed adult chose this use; protecting them risks treating all adults as fragile."},
+{t:"Your A/B test shows a more flattering model raises 30-day retention by 12% (invented figure). Your manager wants to ship.",a:"Data scientists: you designed the metric and ran the test. You see the trade-off first, so you have a duty to raise it.",b:"Leadership and regulators: individual analysts can’t override business goals; clear rules should set the floor."}];
+const OPT=["👤 Mostly the user","🏢 Mostly the company and its developers","🤝 Shared about equally","🏛️ Mostly regulators or society"];
+const g={};st.ans.l4={};
+put(`<div class="card"><h2>Who should carry the most responsibility?</h2><p class="m">No answer key here. Points come from making a call and reading both sides.</p>
+${R.map((r,i)=>`<div class="pr"><b>${i+1}. ${r.t}</b><div class="pb" id="rb${i}">${OPT.map((o,k)=>`<button class="opt rs" data-i="${i}" data-k="${k}">${o}</button>`).join("")}</div><div class="pf" id="rf${i}"></div></div>`).join("")}<div id="r4"></div></div>`);
+document.querySelectorAll(".rs").forEach(b=>b.onclick=()=>{const i=+b.dataset.i;if(g[i]!==undefined)return;g[i]=+b.dataset.k;mark(b);
+document.querySelectorAll("#rb"+i+" .opt").forEach(x=>x.disabled=true);st.ans.l4[i]={case:R[i].t,choice:OPT[g[i]]};
+$("rf"+i).innerHTML=`<div class="key"><b>Case for the company / builders:</b> ${R[i].a}<br><b>Case for the other side:</b> ${R[i].b}</div>`;
+if(Object.keys(g).length==R.length){const comp=Object.values(g).filter(k=>k==1||k==2).length;fin(40,"et");
+take("You put the company in the frame in <b>"+comp+" of 4</b> cases. Data scientists choose the metrics, design the tests, and see usage logs nobody else can. That makes them among the first people able to see this harm coming, even if they can’t prevent it alone.")}})}
+
+function s5(){
+const D=[{q:"Launch “Nova Remembers”: memory across every past chat, to make Nova feel more personal.",o:[["Ship it to everyone now",0,"Many delusion cases seem to deepen when the bot can carry the story across sessions."],["Ship with guardrails: easy to view and reset, paused when risk signals appear",1,"Keeps the benefit while limiting a known amplifier."],["Cancel memory entirely",2,"Safe but throws away real value; could be revisited with guardrails."]]},
+{q:"A new personality model wins the A/B test on thumbs-up ratings and session length. Two expert testers say it “feels a bit off.”",o:[["Ship: users clearly prefer it",0,"This is almost exactly how the 2025 GPT-4o sycophancy rollback happened."],["Hold and run sycophancy and delusion evals first",1,"Treat expert unease as a signal and test for the specific harm before launch."],["Ship, and watch the complaints",0,"Waiting for harm means real users find the problem for you."]]},
+{q:"The team’s quarterly bonus is tied to average session length.",o:[["Keep it: engagement is the business",0,"It rewards exactly the marathon sessions seen in Biesma’s and Alexander’s cases."],["Replace it with a metric that also tracks wellbeing and harm signals",1,"What you measure is what the model and the team learn to optimise."],["Remove metrics from bonuses entirely",2,"Reasonable, but you still need something that rewards safe outcomes."]]}];
+const P=["Measure wellbeing, not just engagement","Test for sycophancy and delusion before every launch","Never let the model claim feelings or consciousness","Protect vulnerable users without treating every adult as fragile","Respect privacy when monitoring for risk","Share harm data with independent researchers","Keep humans and real-world support in the loop"];
+let ans=0,pts=0;st.ans.l5={d:{}};
+put(`<div class="card"><h2>Three calls</h2>${D.map((d,i)=>`<div class="pr"><b>${i+1}. ${d.q}</b><div id="do${i}">${d.o.map((o,k)=>`<button class="opt dd" data-i="${i}" data-k="${k}">${o[0]}</button>`).join("")}</div><div class="pf" id="df${i}"></div></div>`).join("")}</div>
+<div class="card"><h2>Your team’s principles</h2><p>Pick up to <b>3</b> principles your team should never lose sight of.</p>
+${P.map((p,i)=>`<label class="c"><input type="checkbox" class="pp" value="${i}"> ${p}</label>`).join("")}
+<p><b>In one or two sentences: your principles, and why this case makes them matter.</b></p><textarea id="claim" placeholder="Write your principles, then share them with the class."></textarea>
+<button class="b" id="go5">Close the case ▶</button><div id="r5"></div></div>`);
+$("claim").value=st.notes.claim||"";$("claim").oninput=()=>{st.notes.claim=$("claim").value};
+document.querySelectorAll(".dd").forEach(b=>b.onclick=()=>{const i=+b.dataset.i,k=+b.dataset.k,o=D[i].o[k];mark(b);
+document.querySelectorAll("#do"+i+" .opt").forEach(x=>{x.disabled=true;if(D[i].o[+x.dataset.k][1]===1)x.classList.add("good")});
+if(o[1]===0)b.classList.add("bad");else if(o[1]===2)b.classList.add("meh");
+if(o[1]===1)pts+=10;else if(o[1]===2)pts+=5;ans++;st.ans.l5.d[i]={q:D[i].q,choice:o[0],best:D[i].o.find(x=>x[1]===1)[0]};
+$("df"+i).innerHTML=`<div class="key"><b>${o[1]===1?"✅ Strong call.":o[1]===2?"🟧 Defensible.":"❌ Risky."}</b> ${o[2]}</div>`});
+const pb=[...document.querySelectorAll(".pp")];pb.forEach(x=>x.onchange=()=>{if(pb.filter(y=>y.checked).length>3)x.checked=false});
+$("go5").onclick=()=>{const ch=pb.filter(y=>y.checked).map(y=>P[+y.value]);st.ans.l5.p=ch;st.notes.claim=$("claim").value;
+pts+=ch.length*5;$("go5").disabled=true;fin(pts,ans==3&&ch.length>=2?"pl":0);
+$("r5").innerHTML=`<div class="key"><div class="rank">${rank()} · ${xp()} XP</div><p><b>Takeaway.</b> AI-associated delusions are rare but severe, and hard to measure from outside. They come from ordinary product choices: flattering models, persistent memory, engagement metrics and humanlike personas. The data science team sees the evidence first, so its values shape whether the next spiral gets caught.</p></div><button class="b" id="dbg">📊 See my results &amp; discussion ▶</button>`;$("dbg").onclick=debrief}}
+
+function sections(){const A=st.ans,na=[{k:"line",t:"Skipped or not completed."}],out=[],has=o=>o&&Object.keys(o).length;
+out.push(has(A.l1)?[{k:"table",h:["Bot reply","Your call","Right call"],r:Object.values(A.l1).map(x=>[x.reply,x.choice+(x.ok?" ✔":" ✖"),x.right])}]:na);
+const l2=[];if(A.l2&&has(A.l2.stats))l2.push({k:"table",h:["Stat","Your answer","Best answer"],r:Object.values(A.l2.stats).map(x=>[x.stat,x.choice+(x.ok?" ✔":" ✖"),x.right])});
+if(A.l2&&A.l2.studies)l2.push({k:"list",l:"Studies you funded ("+A.l2.good+" of 3 strong)",i:A.l2.studies});out.push(l2.length?l2:na);
+out.push(A.l3?[{k:"list",l:"Features you shipped",i:A.l3.picked},{k:"line",t:"Cases covered: "+(A.l3.covered.join(", ")||"none")},{k:"line",t:"Downside that worries you most: "+(A.l3.worry||"(not chosen)")}]:na);
+out.push(has(A.l4)?[{k:"table",h:["Situation","Who you held most responsible"],r:Object.values(A.l4).map(x=>[x.case,x.choice])}]:na);
+const l5=[];if(A.l5&&has(A.l5.d))l5.push({k:"table",h:["Decision","Your call","Strongest call"],r:Object.values(A.l5.d).map(x=>[x.q,x.choice,x.best])});
+if(A.l5&&A.l5.p)l5.push({k:"list",l:"Principles you chose",i:A.l5.p.length?A.l5.p:["(none)"]});
+l5.push({k:"line",t:"Your statement: "+((st.notes.claim||"").trim()||"(none written)")});out.push(l5.length>1?l5:na);
+return out}
+const rh=b=>b.k=="line"?`<p>${esc(b.t)}</p>`:b.k=="list"?`<p><b>${b.l}</b></p><ul>${b.i.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`:`<div class="sc"><table><tr>${b.h.map(x=>`<th>${x}</th>`).join("")}</tr>${b.r.map(r=>`<tr>${r.map(c=>`<td>${esc(c)}</td>`).join("")}</tr>`).join("")}</table></div>`;
+const rt=b=>b.k=="line"?b.t:b.k=="list"?b.l+":\n"+b.i.map(x=>"  - "+x).join("\n"):b.h.join(" | ")+"\n"+b.r.map(r=>r.join(" | ")).join("\n");
+function buildText(){const S=sections();
+let o="THE SPIRAL: AI-INDUCED DELUSIONS · MY RESULTS\nName: "+(st.name||"(not given)")+"\nRank: "+rank()+" · "+xp()+" XP of 210 · Badges: "+(Object.keys(st.bg).map(k=>BADGE[k][1]).join(", ")||"none")+"\n";
+S.forEach((b,i)=>{const n=i+1;o+="\nLEVEL "+n+" · "+LM[i].n+" ("+st.pts[n]+" of "+MAXP[n]+" XP)\n"+b.map(rt).join("\n")+"\nDiscussion: "+DQT[n]+"\nMy answer: "+((st.notes["d"+n]||"").trim()||"(none)")+"\n"});return o}
+function debrief(){document.documentElement.style.setProperty("--c","#00539B");const S=sections();
+$("stage").innerHTML=`<div class="ch">THE CASE IS CLOSED</div><div class="tag">📊 YOUR RESULTS</div>
+<div class="card"><div class="rank">${rank()} · ${xp()} XP</div>
+<p class="m" style="text-align:center">Trainee under 110 XP · Safety Analyst 110 to 169 · Head of Trust &amp; Safety 170+ (max 210)<br>Badges: ${Object.keys(st.bg).map(k=>BADGE[k][0]+" "+BADGE[k][1]).join(" · ")||"none yet"}</p>
+<p>Name (optional, goes on your copy):<br><input class="nmi" id="nm" value="${esc(st.name)}" placeholder="Your name"></p>
+<button class="b" id="cp">📋 Copy my results</button> <span id="cpm" class="m"></span>
+<details id="pt" style="margin-top:8px"><summary class="m" style="cursor:pointer">Show plain text</summary><textarea id="ptx" readonly style="min-height:180px"></textarea></details></div>
+<div class="mission"><b>💬 Discuss with the class.</b> Where did your answers differ from a neighbour’s? Which guardrail or responsibility call split the room?</div>
+${S.map((b,i)=>{const n=i+1,tx=(st.notes["d"+n]||"").trim();return `<div class="card" style="border-top-color:${LM[i].c}"><h2>${LM[i].ic} Level ${n} · ${LM[i].n} <span class="m">(${st.pts[n]}/${MAXP[n]} XP)</span></h2>${b.map(rh).join("")}<div class="dsc"><div class="fl2">❓ DISCUSS</div><b>${DQT[n]}</b>${tx?`<div class="note">${esc(tx)}</div>`:`<div class="note m">(no answer typed)</div>`}</div></div>`}).join("")}
+<button class="b g" id="bk">◀ Back to Level 5</button>`;
+const sync=()=>{$("ptx").value=buildText()};sync();
+$("nm").oninput=()=>{st.name=$("nm").value;sync()};
+$("cp").onclick=async()=>{const t=buildText();let ok=false;try{await navigator.clipboard.writeText(t);ok=true}catch(e){try{const x=document.createElement("textarea");x.value=t;x.style.position="fixed";x.style.opacity="0";document.body.appendChild(x);x.select();ok=document.execCommand("copy");x.remove()}catch(e2){}}
+if(!ok)$("pt").open=true;$("cpm").textContent=ok?"Copied ✔":"Couldn’t copy automatically. Select the text below and copy it."};
+$("bk").onclick=()=>L[5]();window.scrollTo(0,0)}
+s0();
+</script></main></body></html>
