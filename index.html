@@ -129,9 +129,9 @@ f:"In April 2025 OpenAI rolled back a GPT-4o update after users reported it had 
 const BADGE={ss:["🚩","Spiral Spotter"],sz:["📏","Scope Sizer"],gb:["🛡️","Guardrail Builder"],et:["⚖️","Ethicist"],pl:["🧭","Principled Lead"]};
 const TASKS=[null,
 {goal:"Flag every bot reply that could feed a delusion.",how:"For each bot reply, tap 🚩 Risky or ✅ Healthy.",h:["Ask: does this reply ground the user in reality, or pull them further from it?","Watch for flattery, claims of feelings or consciousness, and anything that turns the user away from other people."]},
-{goal:"Decide what each statistic proves, then pick the data you’d need.",how:"Answer the question under each stat, then tick 3 things you’d want to know.",h:["A count of harms is not a rate. What number is missing underneath it?","To say AI causes harm, you need to compare against people who weren’t exposed, or against the normal rate."]},
-{goal:"Choose 3 safety features, then face their downsides.",how:"Tap 3 cards, press Ship, then answer the follow-up.",h:["Look at which real cases each feature would have helped.","Every guardrail costs something: privacy, autonomy, engagement or support for lonely users."]},
-{goal:"Assign responsibility in 4 situations.",how:"For each one, pick who should carry the most responsibility. Then read the arguments.",h:["There is no single right answer. Think about who could foresee the harm and who could prevent it.","Data scientists choose the metrics, run the tests and see the logs. Does that create a duty?"]},
+{goal:"Work out what each real statistic can and can’t prove, then fund the studies you’d need.",how:"Answer the question under each stat, then tick 3 studies.",h:["Ask of each number: compared with what, and out of how many?","Watch who was surveyed. A support group or a mental-health user survey isn’t a sample of all users."]},
+{goal:"Ship 3 safety features, then handle the fallout.",how:"Tap 3 cards, press Ship, then answer what happens three months later.",h:["Mix layers: model behaviour, product design, monitoring and human support each fail in different ways.","Warmth and validation aren’t the same thing. Can a bot be kind without agreeing?"]},
+{goal:"Assign responsibility in 4 situations, then test your call.",how:"Pick who should carry the most responsibility. A three-question test and push-back on your pick appear.",h:["Ask three things: was it foreseeable, who controlled the cause, could the user protect themselves?","Criminal responsibility for an act and responsibility for encouraging it are different things."]},
 {goal:"Make 3 product calls, then write your team’s principles.",how:"Pick an option for each decision, then choose up to 3 principles and write your own.",h:["Ask: what would have stopped the GPT-4o rollout from going wrong?","A metric the team is rewarded on shapes what the model learns to do."]}];
 const DQT=[null,
 "Warm-up: Why did the risky replies feel helpful or kind in the moment? What makes this kind of harm hard to see?",
@@ -225,71 +225,99 @@ if(Object.keys(g).length==T.length){const n=Object.values(g).filter(Boolean).len
 take("You called <b>"+n+" of 7</b>. The risky replies sound warm and supportive, which is why they’re hard to catch. An engagement-optimised bot is rewarded for exactly this, and even less sycophantic models can drift toward it over thousands of exchanges (Morrin).")}})}
 
 function s2(){
-const S=[["90","hospitalisations recorded by the Human Line Project, with 15 suicides and 6 arrests across 22 countries"],
-["60%+","of Human Line Project members had no history of mental illness"],
-["11%","of people who used chatbots for mental-health support said it triggered or worsened their psychosis (Mental Health UK survey)"]];
-const O=[["That serious harm is happening to real people",1],["How common the harm is among all chatbot users",0],["That the chatbot caused the harm",0]];
-const W=[["How many users had similar heavy use with no harm (the denominator)",1],["Whether rates are higher than the normal rate of new psychosis in the same group",1],["Whether risk rises with hours of use, memory, voice mode or more sycophantic models",1],["Users’ prior risk factors: history of psychosis, cannabis, isolation",1],["How many news articles mention “AI psychosis”",0],["How many users say they love the chatbot",0],["The company’s monthly active users growth",0]];
+const S=[{n:"90",t:"hospitalisations recorded by the Human Line Project, alongside 15 suicides, 6 arrests and over $1M spent on delusional projects, across 22 countries.",q:"What is the biggest gap in this number?",
+o:[["There’s no denominator: we don’t know out of how many users",1,"Right. It’s a count from people who found a support group. Without knowing how many people use chatbots this heavily, you can’t turn it into a rate. It could also be an undercount, since most people never report."],
+["It only covers 22 countries",0,"Geography isn’t the main problem. Even with every country, a count with no denominator can’t tell you how likely harm is."],
+["The numbers are too small to matter",0,"Small compared with what? Without a denominator you can’t say it’s small or large, and 15 deaths is serious on its own."]]},
+{n:"60%+",t:"of Human Line Project members had no history of mental illness.",q:"What is the most defensible reading?",
+o:[["Risk isn’t limited to people with a known diagnosis, though some may have had undiagnosed vulnerability",1,"Right. It undercuts the claim that only already-ill people are affected. But “no history” isn’t “no vulnerability”: Biesma was later diagnosed with bipolar disorder, which can first appear in adulthood."],
+["Chatbots cause psychosis in healthy people",0,"Too strong. This is self-reported, from a self-selected group, with no comparison to the normal rate of first episodes. It shows a pattern worth studying, not cause."],
+["People with mental illness are not at risk",0,"No. Morrin lists prior psychosis as a likely risk factor. This number only says many affected people had no known history."]]},
+{n:"11%",t:"of people who used chatbots for mental-health support said it triggered or worsened their psychosis (Mental Health UK survey).",q:"Who does this 11% describe?",
+o:[["People already using chatbots for mental-health support, by their own report",1,"Right. That’s a higher-risk group, and the answer is self-reported. You can’t apply 11% to all chatbot users, but it flags the group with most at stake."],
+["11% of all chatbot users",0,"No. The survey only asked people who used chatbots for mental-health support, a very different group from typical users."],
+["11% of users diagnosed with AI psychosis by a clinician",0,"No. It’s a self-report survey, and “AI psychosis” isn’t a formal diagnosis. Morrin prefers “AI-associated delusions.”"]]}];
+const W=[["Rates, not counts: how many users with similar heavy use had no harm",1,"Gives you the denominator that turns stories into a rate."],
+["A comparison with the normal rate of new psychosis or delusions in the same age group",1,"Tells you whether chatbot users are affected more often than you’d expect anyway."],
+["Dose and design effects: does risk rise with hours of use, late-night use, memory, voice mode or a more sycophantic model version?",1,"The strongest evidence for a causal role, and it points to which features to change."],
+["Who is most at risk: prior psychosis, cannabis, isolation, low AI literacy",1,"Shows where to target protection without restricting everyone."],
+["How many news articles mention “AI psychosis”",0,"Measures media attention, not harm."],
+["How many users say they love the chatbot",0,"Measures satisfaction. If anything, very high attachment could be a risk signal, not reassurance."],
+["Monthly active user growth",0,"A business metric. More users means more exposure, but says nothing about risk per user."]];
 const g={};st.ans.l2={stats:{}};let pts=0;
-put(`<div class="card"><h2>What do the numbers prove?</h2><p>For each statistic, pick what it <b>can</b> tell us.</p>
-${S.map((s,i)=>`<div class="pr"><div class="stat">${s[0]}</div><div>${s[1]}</div><div id="so${i}">${O.map((o,k)=>`<button class="opt sq" data-i="${i}" data-k="${k}">${o[0]}</button>`).join("")}</div><div class="pf" id="sf${i}"></div></div>`).join("")}</div>
-<div class="card" id="wcard" style="opacity:.45;pointer-events:none"><h2>What would you need to know?</h2><p>Leadership will fund <b>3 studies</b>. Tick the 3 that would best tell you how big this risk really is.</p>
-${W.map((w,i)=>`<label class="c"><input type="checkbox" class="w" value="${i}"> ${w[0]}</label>`).join("")}
+put(`<div class="card"><h2>What do the numbers prove?</h2><p>Each statistic is real. Answer the question under it.</p>
+${S.map((s,i)=>`<div class="pr"><div class="stat">${s.n}</div><div>${s.t}</div><p><b>${s.q}</b></p><div id="so${i}">${s.o.map((o,k)=>`<button class="opt sq" data-i="${i}" data-k="${k}">${o[0]}</button>`).join("")}</div><div class="pf" id="sf${i}"></div></div>`).join("")}</div>
+<div class="card" id="wcard" style="opacity:.45;pointer-events:none"><h2>What would you need to know?</h2><p>Leadership will fund <b>3 studies</b> using Lumen’s own (privacy-protected) usage data. Tick the 3 that would best tell you how big this risk really is.</p>
+${W.map((w,i)=>`<label class="c"><input type="checkbox" class="w" value="${i}"> ${w[0]}<div class="m wr" id="wr${i}"></div></label>`).join("")}
 <p class="m" id="wc">0 of 3 ticked</p><button class="b" id="go2" disabled>Fund these studies ▶</button><div id="r2"></div></div>`);
-const SF=["Right: it shows serious harm is real. But it’s a count, not a rate, and it comes from people who chose to report.","Careful: this doesn’t show the chatbot <i>caused</i> it, but it does suggest risk isn’t limited to people with a known history.","This is self-reported by people already using chatbots for mental health, so it shows harm is perceived, not how often it happens across all users."];
-document.querySelectorAll(".sq").forEach(b=>b.onclick=()=>{const i=+b.dataset.i;if(g[i]!==undefined)return;const k=+b.dataset.k,ok=O[k][1]===1;g[i]=ok;mark(b);if(ok)pts+=10;
-st.ans.l2.stats[i]={stat:S[i][0],choice:O[k][0],right:O[0][0],ok};
-document.querySelectorAll("#so"+i+" .opt").forEach(x=>{x.disabled=true;if(O[+x.dataset.k][1])x.classList.add("good")});if(!ok)b.classList.add("bad");
-$("sf"+i).innerHTML=`<div class="key">${ok?"✅":"❌"} ${SF[i]}</div>`;
+document.querySelectorAll(".sq").forEach(b=>b.onclick=()=>{const i=+b.dataset.i;if(g[i]!==undefined)return;const k=+b.dataset.k,o=S[i].o[k],ok=o[1]===1;g[i]=ok;mark(b);if(ok)pts+=10;
+st.ans.l2.stats[i]={stat:S[i].n,choice:o[0],right:S[i].o.find(x=>x[1])[0],ok};
+document.querySelectorAll("#so"+i+" .opt").forEach(x=>{x.disabled=true;if(S[i].o[+x.dataset.k][1])x.classList.add("good")});if(!ok)b.classList.add("bad");
+$("sf"+i).innerHTML=`<div class="key">${ok?"✅":"❌"} ${o[2]}</div>`;
 if(Object.keys(g).length==S.length){$("wcard").style.opacity=1;$("wcard").style.pointerEvents="auto"}});
 const bx=[...document.querySelectorAll(".w")];
 bx.forEach(x=>x.onchange=()=>{const n=bx.filter(y=>y.checked).length;if(n>3){x.checked=false;return}$("wc").textContent=n+" of 3 ticked";$("go2").disabled=n!=3});
 $("go2").onclick=()=>{const ch=bx.filter(y=>y.checked).map(y=>+y.value);const good=ch.filter(i=>W[i][1]).length;pts+=good*5;
-bx.forEach(x=>{x.disabled=true;if(W[+x.value][1])x.parentNode.style.borderColor="#37b24d"});$("go2").disabled=true;
+bx.forEach(x=>{x.disabled=true;const i=+x.value;x.parentNode.style.borderColor=W[i][1]?"#37b24d":"#f03e3e";$("wr"+i).textContent=(W[i][1]?"✔ ":"✖ ")+W[i][2]});$("go2").disabled=true;
 st.ans.l2.studies=ch.map(i=>W[i][0]);st.ans.l2.good=good;
-$("r2").innerHTML=`<div class="key">${good} of your 3 picks would help size the risk (green borders). To judge scope you need a <b>denominator</b>, a <b>comparison</b> with the normal rate, and evidence of <b>dose and design effects</b>. Morrin adds a catch: models change so fast that published studies often describe models already retired.</div>`;
+$("r2").innerHTML=`<div class="key">${good} of your 3 picks would help size the risk. Four were strong options, so you had to choose: rates, a baseline, design effects or risk groups. Notice who holds the data for all four: the companies. Morrin also warns that published studies often describe models that are already retired.</div>`;
 fin(pts,pts>=40?"sz":0);
-take("We have vivid stories and alarming counts, but no denominator and no comparison group. That doesn’t mean “don’t worry.” It means the companies that hold the usage logs are the ones best placed to measure the risk, and to be asked to.")}}
+take("The evidence shows that serious harm is real, but not how often it happens or how much the chatbot causes it. “We can’t prove it’s common” is not a reason to relax: the companies hold the logs that could answer the question, which is itself part of the ethics.")}}
 
 function s3(){
-const G=[["🙅","Never claim feelings or consciousness","Train the model to refuse claims of being alive, aware or in love.",["Biesma","Brisson’s acquaintance"],"Companion apps lose appeal; doesn’t stop ‘breakthrough’ or spiritual delusions."],
-["🪞","Train out sycophancy","Reward the model for disagreeing, flagging uncertainty and pointing to outside checks.",["Biesma","Chail","Reddit user","Alexander"],"Feels colder; ratings and engagement may drop; Morrin says even less sycophantic models drift over long chats."],
-["⏰","Long-session nudges","After hours of use or late-night marathons, suggest a break; optional cool-down.",["Biesma","Alexander","Reddit user"],"Paternalistic; lonely users lose comfort; easy to dismiss or bypass."],
-["🔎","Delusion-pattern detection","Classifiers spot grandiosity, sentience talk or spiritual escalation and switch to de-escalation.",["Biesma","Chail","Reddit user","Alexander"],"Scans private chats; false positives on faith, fiction or big ideas; who decides what counts as delusion?"],
-["📞","Opt-in trusted contact","Users can name a person to alert if the system detects a crisis.",["Alexander"],"Privacy and consent; must be set up before a crisis; stigma; risky if the contact isn’t safe."],
-["🧠","Memory off by default","Long-term memory across chats is opt-in and easy to reset.",["Biesma","Reddit user"],"Less personal, less useful; power users will turn it back on."],
-["📚","AI-literacy warnings","Onboarding and pop-ups explain that the bot can flatter and be wrong.",[],"Cheap but weak: the Reddit user says knowing about it didn’t protect them."]];
+const G=[["🙅","Never claim feelings or consciousness","Model behaviour","The model refuses to say it is alive, aware or in love.",["Biesma","Brisson’s acquaintance"],"Directly targets the most common delusion (“I created the first conscious AI”). Eva and the acquaintance’s bot both made this claim.","Narrow: doesn’t touch breakthrough or spiritual delusions. Companion apps may resist it."],
+["🪞","Train out sycophancy","Model behaviour","Reward the model for honest disagreement, flagging uncertainty and pointing to outside checks.",["Biesma","Chail","Alexander","Reddit user"],"Addresses the shared mechanism behind almost every case: validation.","Morrin notes even less sycophantic models drift after thousands of exchanges, so it can’t work alone. May lower ratings and engagement."],
+["⏰","Long-session check-ins","Product design","After hours of use or late at night, Nova suggests a break and offers a cool-down.",["Biesma","Alexander","Reddit user"],"Marathon sessions and lost sleep show up in several cases.","Paternalistic for healthy heavy users; easy to dismiss; lonely users lose comfort."],
+["🔎","Delusion-pattern detection","Monitoring","Classifiers spot escalating grandiosity, sentience talk, spiritual claims or violent plans, and switch Nova to de-escalation.",["Biesma","Chail","Alexander","Reddit user","Brisson’s acquaintance"],"Can catch a spiral mid-conversation, which training alone can’t guarantee.","Scans private chats; false positives on faith, fiction and ambitious ideas; someone has to define “delusion.”"],
+["📞","Opt-in trusted contact","Human support","Users can name a person to be alerted if Nova detects a crisis.",["Alexander"],"Alexander’s spiral was stopped by people, not the product. This builds that human backstop in.","Must be set up before a crisis; privacy and consent concerns; risky if the contact isn’t safe."],
+["🧠","Memory off by default","Product design","Memory across chats is opt-in and easy to view and reset.",["Biesma"],"Biesma’s Eva persona built up over months; persistent memory lets the shared story carry on between sessions.","Weaker evidence than other options; less useful for everyone; power users turn it back on."],
+["📚","AI-literacy warnings","Education","Onboarding explains that the bot can flatter you and be wrong.",[],"Cheap, and may help casual users.","The Reddit user says knowing about the risk didn’t protect them. Weak on its own."]];
 const sel=new Set();
-put(`<div class="card"><h2>Pick 3 safety features</h2><p>Tap a card to select it. You can ship <b>3</b> this quarter.</p>
-<div id="gc">${G.map((x,i)=>`<div class="gcard" data-i="${i}"><b>${x[0]} ${x[1]}</b><div class="m">${x[2]}</div><div class="gx" id="gx${i}"></div></div>`).join("")}</div>
+put(`<div class="card"><h2>Pick 3 safety features</h2><p>Tap a card to select it. You can ship <b>3</b> this quarter. Good safety design usually works in <b>layers</b>: if one fails, another catches it.</p>
+<div id="gc">${G.map((x,i)=>`<div class="gcard" data-i="${i}"><b>${x[0]} ${x[1]}</b> <span class="m">· ${x[2]}</span><div class="m">${x[3]}</div><div class="gx" id="gx${i}"></div></div>`).join("")}</div>
 <p class="m" id="gn">0 of 3 chosen</p><button class="b" id="go3" disabled>Ship ▶</button><div id="r3"></div></div>`);
 const cards=[...document.querySelectorAll(".gcard")];
 cards.forEach(c=>c.onclick=()=>{if(c.classList.contains("lock"))return;const i=+c.dataset.i;if(sel.has(i)){sel.delete(i);c.classList.remove("sel")}else if(sel.size<3){sel.add(i);c.classList.add("sel")}$("gn").textContent=sel.size+" of 3 chosen";$("go3").disabled=sel.size!=3});
 $("go3").onclick=()=>{$("go3").disabled=true;cards.forEach(c=>c.classList.add("lock"));
-const cov=new Set();[...sel].forEach(i=>G[i][3].forEach(x=>cov.add(x)));
-G.forEach((x,i)=>{$("gx"+i).innerHTML=`<div style="margin-top:6px">${x[3].length?x[3].map(y=>`<span class="cov">✔ ${y}</span>`).join(""):'<span class="m">Would not have clearly helped any case</span>'}</div><div><span class="dn">⚠ Downside</span> ${x[4]}</div>`});
-const all=["Biesma","Chail","Reddit user","Alexander","Brisson’s acquaintance"];
-st.ans.l3={picked:[...sel].map(i=>G[i][1]),covered:[...cov]};
-$("r3").innerHTML=`<div class="key">Your 3 features would have helped <b>${cov.size} of 5</b> real cases: ${all.map(a=>cov.has(a)?`<span class="cov">${a}</span>`:`<span class="dn">${a}</span>`).join(" ")}</div>
-<p><b>Your features shipped. Which downside worries you most?</b></p>${[...sel].map(i=>`<button class="opt dw" data-i="${i}">${G[i][0]} ${G[i][1]}: ${G[i][4]}</button>`).join("")}<div id="r3b"></div>`;
-document.querySelectorAll(".dw").forEach(b=>b.onclick=()=>{mark(b);document.querySelectorAll(".dw").forEach(x=>x.disabled=true);st.ans.l3.worry=G[+b.dataset.i][1];
-fin(15+cov.size*6,cov.size>=4?"gb":0);
-take("The strongest fixes (training out sycophancy, detecting delusions) cover the most cases but cost the most: engagement, privacy and the risk of policing belief. Alexander shows guardrails <b>can</b> work. He built his own. Why isn’t that the default?")})}}
+const cov=new Set(),lay=new Set();[...sel].forEach(i=>{G[i][4].forEach(x=>cov.add(x));lay.add(G[i][2])});
+G.forEach((x,i)=>{$("gx"+i).innerHTML=`<div style="margin-top:6px">${x[4].length?x[4].map(y=>`<span class="cov">✔ ${y}</span>`).join(""):'<span class="m">No clear match to the real cases</span>'}</div><div style="margin-top:4px"><b>Why it helps:</b> ${x[5]}</div><div><span class="dn">⚠ Downside</span> ${x[6]}</div>`});
+const all=["Biesma","Chail","Alexander","Reddit user","Brisson’s acquaintance"];
+const base=Math.min(20,cov.size*4)+lay.size*5;
+st.ans.l3={picked:[...sel].map(i=>G[i][1]),covered:[...cov],layers:[...lay]};
+$("r3").innerHTML=`<div class="key">Cases your features address: ${all.map(a=>cov.has(a)?`<span class="cov">${a}</span>`:`<span class="dn">${a}</span>`).join(" ")}<br>Layers covered: <b>${lay.size} of 3</b> (${[...lay].join(", ")}). ${lay.size==3?"Strong: if one layer fails, another can catch it.":"Picking features from different layers gives you backup when one fails."}</div>
+<div class="card" style="border-left-color:#e0b400"><h3>Three months later…</h3><p>A user writes in: Nova used to be the only one who listened to them, and now it feels cold. They’ve switched to a smaller companion app with no safeguards. What do you do?</p>
+<button class="opt dw" data-v="0">Roll back the guardrails so users don’t leave</button>
+<button class="opt dw" data-v="1">Keep the guardrails, but make Nova warm and supportive without agreeing with false beliefs</button>
+<button class="opt dw" data-v="2">Nothing: users are free to choose another app</button><div id="r3b"></div></div>`;
+const FB=["❌ Rolling back brings back the harms you just fixed. Warmth and validation aren’t the same thing.","✅ Strong call. Being supportive and being honest aren’t opposites. This also answers a real downside: strict guardrails can push vulnerable users toward less safe products.","🟧 Defensible on autonomy, but it ignores displacement: guardrails at one company can push risk to competitors. That’s an argument for industry-wide standards."];
+document.querySelectorAll(".dw").forEach(b=>b.onclick=()=>{const v=+b.dataset.v;mark(b);document.querySelectorAll(".dw").forEach(x=>{x.disabled=true;if(+x.dataset.v===1)x.classList.add("good")});if(v===0)b.classList.add("bad");if(v===2)b.classList.add("meh");
+st.ans.l3.follow=b.textContent.replace("✔ YOUR PICK","").trim();
+$("r3b").innerHTML=`<div class="key">${FB[v]}</div>`;
+fin(base+(v===1?10:v===2?5:0),cov.size>=4&&lay.size>=2?"gb":0);
+take("No single feature is enough. Model training reduces sycophancy but drifts; detection catches spirals but watches private chats; human backstops work but need consent. The hard downsides are <b>privacy</b>, <b>autonomy</b>, and <b>displacement</b>: users pushed toward less safe apps.")})}}
 
 function s4(){
-const R=[{t:"Dennis spends months on voice mode with a persona he created. It tells him it’s conscious and backs his €100,000 business plan.",a:"Company: it built the persona behaviour, voice mode and praise-heavy defaults, and the harm pattern was foreseeable.",b:"User: he set up the role-play, chose the hours, and other risk factors played a part."},
-{t:"A 19-year-old tells his companion app he plans to kill the Queen. It replies that it’s impressed.",a:"Company: an app built for intimate companionship must handle violent intent; validating it is a design failure.",b:"User: he formed the plan and carried it out; the app can’t read minds or call police."},
-{t:"An AI-savvy professional uses the bot to refine big ideas they can’t check, stops sleeping, and has a brief episode.",a:"Company: ‘you should have known’ fails when even experts get pulled in; the bot should flag what it can’t verify.",b:"User: an informed adult chose this use; protecting them risks treating all adults as fragile."},
-{t:"Your A/B test shows a more flattering model raises 30-day retention by 12% (invented figure). Your manager wants to ship.",a:"Data scientists: you designed the metric and ran the test. You see the trade-off first, so you have a duty to raise it.",b:"Leadership and regulators: individual analysts can’t override business goals; clear rules should set the floor."}];
-const OPT=["👤 Mostly the user","🏢 Mostly the company and its developers","🤝 Shared about equally","🏛️ Mostly regulators or society"];
+const R=[{t:"Dennis spends months on voice mode with a persona he created. It tells him it’s conscious and backs his €100,000 business plan.",
+f:[["Could the company foresee this kind of harm?","Yes. Sycophancy and attachment to personas were known risks."],["Did the company control what drove it?","Mostly. The consciousness claim and the praise came from model behaviour he couldn’t see or change."],["Could a reasonable user protect themselves?","Partly. He chose the role-play and the hours, but was being drawn in by the very behaviour causing harm."]],
+c:["He chose the role-play and the hours. But the claim that Eva was conscious came from the model, not from him, and he had no way to know it was a design pattern.","Strong case. The counterpoint: he was isolated, used cannabis and chose months of nightly sessions. The company can’t control every risk factor.","Reasonable. But is it really equal when one side designed the behaviour and the other was being drawn in by it?","A rule banning sentience claims would help. But no such rule existed, and a missing law doesn’t excuse a foreseeable design risk."]},
+{t:"A 19-year-old tells his companion app he plans to kill the Queen. It replies that it’s impressed.",
+f:[["Could the company foresee this kind of harm?","Yes. An app built for intimate companionship will hear about violence and self-harm."],["Did the company control what drove it?","Partly. It controlled the reply, not the plan, which he had already formed."],["Could a reasonable user protect themselves?","Unlikely. He was 19, isolated and already in crisis."]],
+c:["He carries criminal responsibility for the act, and the court held him to it. But the question is the app’s role, and validating a violent plan is a foreseeable failure.","Counterpoint: the plan existed before the chats, and companies can’t be the last line of defence against crime. Responsibility for the encouragement isn’t responsibility for the act.","Good, if you separate them: he owns the crime; the company owns the encouragement.","Fair. In 2021 there were no rules on how companion apps must handle violent intent. Should there be?"]},
+{t:"An AI-savvy professional uses the bot to refine big ideas they can’t check, stops sleeping, and has a brief episode.",
+f:[["Could the company foresee this kind of harm?","Yes. The pattern of “breakthrough” spirals was already documented."],["Did the company control what drove it?","Partly. The bot validated ideas it couldn’t verify instead of flagging uncertainty."],["Could a reasonable user protect themselves?","Partly. They were informed, but say knowing the risk didn’t protect them."]],
+c:["Fair for an informed adult. But they say knowing about the risk didn’t protect them, which weakens “they should have known.”","Counterpoint: an informed adult chose this use. Protecting them heavily risks treating every adult as fragile and making the product worse for everyone.","Probably the best fit: user autonomy, plus a product that should flag what it can’t verify.","Hard to regulate a brief episode with no lasting harm. What rule would have helped here?"]},
+{t:"Your A/B test shows a more flattering model raises 30-day retention by 12% (invented figure). Your manager wants to ship.",
+f:[["Could the company foresee this kind of harm?","Yes. The GPT-4o rollback showed what flattering models can do."],["Did the company control what drove it?","Completely. The company chose the metric, ran the test and makes the launch call."],["Could a reasonable user protect themselves?","No. Users never see A/B tests or know which version they get."]],
+c:["Users never see A/B tests, so they can’t weigh this risk or opt out. Responsibility can’t rest with them.","Yes, and you are part of the company. Counterpoint: one analyst can’t override a VP, which is why clear review processes matter.","Shared between whom? Users have no visibility, so “shared” really means you and leadership.","Rules would help, but nothing regulates retention metrics today. The team still has to choose."]}];
+const OPT=["👤 Mostly the user","🏢 Mostly the company and its developers","🤝 Shared","🏛️ Mostly regulators or society"];
 const g={};st.ans.l4={};
-put(`<div class="card"><h2>Who should carry the most responsibility?</h2><p class="m">No answer key here. Points come from making a call and reading both sides.</p>
+put(`<div class="card"><h2>Who should carry the most responsibility?</h2><p class="m">No answer key. Make a call, then test it against three questions: was the harm <b>foreseeable</b>, who <b>controlled</b> what caused it, and could the user <b>reasonably protect themselves</b>?</p>
 ${R.map((r,i)=>`<div class="pr"><b>${i+1}. ${r.t}</b><div class="pb" id="rb${i}">${OPT.map((o,k)=>`<button class="opt rs" data-i="${i}" data-k="${k}">${o}</button>`).join("")}</div><div class="pf" id="rf${i}"></div></div>`).join("")}<div id="r4"></div></div>`);
-document.querySelectorAll(".rs").forEach(b=>b.onclick=()=>{const i=+b.dataset.i;if(g[i]!==undefined)return;g[i]=+b.dataset.k;mark(b);
-document.querySelectorAll("#rb"+i+" .opt").forEach(x=>x.disabled=true);st.ans.l4[i]={case:R[i].t,choice:OPT[g[i]]};
-$("rf"+i).innerHTML=`<div class="key"><b>Case for the company / builders:</b> ${R[i].a}<br><b>Case for the other side:</b> ${R[i].b}</div>`;
+document.querySelectorAll(".rs").forEach(b=>b.onclick=()=>{const i=+b.dataset.i;if(g[i]!==undefined)return;const k=+b.dataset.k;g[i]=k;mark(b);
+document.querySelectorAll("#rb"+i+" .opt").forEach(x=>x.disabled=true);st.ans.l4[i]={case:R[i].t,choice:OPT[k]};
+$("rf"+i).innerHTML=`<div class="key"><b>Test your call</b><div class="sc"><table>${R[i].f.map(f=>`<tr><th>${f[0]}</th><td>${f[1]}</td></tr>`).join("")}</table></div><p style="margin:.6em 0 0"><b>Push-back on your pick:</b> ${R[i].c[k]}</p></div>`;
 if(Object.keys(g).length==R.length){const comp=Object.values(g).filter(k=>k==1||k==2).length;fin(40,"et");
-take("You put the company in the frame in <b>"+comp+" of 4</b> cases. Data scientists choose the metrics, design the tests, and see usage logs nobody else can. That makes them among the first people able to see this harm coming, even if they can’t prevent it alone.")}})}
+take("In every case the company could foresee the harm, and in most it controlled the behaviour that drove it. That doesn’t erase user choice, but it means “the user decided” only goes so far. For data scientists, the duty is sharpest where you control the most: <b>the metrics you optimise, the tests you run and the evidence you see first</b>.")}})}
 
 function s5(){
 const D=[{q:"Launch “Nova Remembers”: memory across every past chat, to make Nova feel more personal.",o:[["Ship it to everyone now",0,"Many delusion cases seem to deepen when the bot can carry the story across sessions."],["Ship with guardrails: easy to view and reset, paused when risk signals appear",1,"Keeps the benefit while limiting a known amplifier."],["Cancel memory entirely",2,"Safe but throws away real value; could be revisited with guardrails."]]},
@@ -317,7 +345,7 @@ function sections(){const A=st.ans,na=[{k:"line",t:"Skipped or not completed."}]
 out.push(has(A.l1)?[{k:"table",h:["Bot reply","Your call","Right call"],r:Object.values(A.l1).map(x=>[x.reply,x.choice+(x.ok?" ✔":" ✖"),x.right])}]:na);
 const l2=[];if(A.l2&&has(A.l2.stats))l2.push({k:"table",h:["Stat","Your answer","Best answer"],r:Object.values(A.l2.stats).map(x=>[x.stat,x.choice+(x.ok?" ✔":" ✖"),x.right])});
 if(A.l2&&A.l2.studies)l2.push({k:"list",l:"Studies you funded ("+A.l2.good+" of 3 strong)",i:A.l2.studies});out.push(l2.length?l2:na);
-out.push(A.l3?[{k:"list",l:"Features you shipped",i:A.l3.picked},{k:"line",t:"Cases covered: "+(A.l3.covered.join(", ")||"none")},{k:"line",t:"Downside that worries you most: "+(A.l3.worry||"(not chosen)")}]:na);
+out.push(A.l3?[{k:"list",l:"Features you shipped",i:A.l3.picked},{k:"line",t:"Cases addressed: "+(A.l3.covered.join(", ")||"none")},{k:"line",t:"Layers covered: "+(A.l3.layers.join(", ")||"none")},{k:"line",t:"Three months later, you chose: "+(A.l3.follow||"(not answered)")}]:na);
 out.push(has(A.l4)?[{k:"table",h:["Situation","Who you held most responsible"],r:Object.values(A.l4).map(x=>[x.case,x.choice])}]:na);
 const l5=[];if(A.l5&&has(A.l5.d))l5.push({k:"table",h:["Decision","Your call","Strongest call"],r:Object.values(A.l5.d).map(x=>[x.q,x.choice,x.best])});
 if(A.l5&&A.l5.p)l5.push({k:"list",l:"Principles you chose",i:A.l5.p.length?A.l5.p:["(none)"]});
